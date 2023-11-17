@@ -175,7 +175,7 @@ public class StudentNetworkSimulator extends NetworkSimulator
     {
         int cSum = calculateChecksum(packet);
         if (cSum == packet.getChecksum()) {
-            System.out.println("Final Recieve " + packet);
+            //System.out.println("Final Recieve " + packet);
             
             if (recieveBuffer[packet.getSeqnum()] != null && recieveBuffer[packet.getSeqnum()].getChecksum() == packet.getChecksum()) {
                 acksSentByB += 1;
@@ -197,7 +197,7 @@ public class StudentNetworkSimulator extends NetworkSimulator
             }
         }
         else {
-            System.out.println("AIn corrupted packet detected " + packet);
+            //System.out.println("AIn corrupted packet detected " + packet);
             corruptedPackets += 1;
             retransmissionsByA +=1;
 
@@ -230,12 +230,11 @@ public class StudentNetworkSimulator extends NetworkSimulator
         for (int x=0; x < WindowSize; x++) {
             if(sendBuffer[x] != null) {
                 nRet = x;
-                System.out.println(nRet);
-                //break;
+                break;
             }
         }
         if(nRet != -1) {
-            System.out.println("Rtransmitting packet " + sendBuffer[nRet]);
+            //System.out.println("Rtransmitting packet " + sendBuffer[nRet]);
             timers[nRet][2] = 1.0;
             toLayer3(A, sendBuffer[nRet]);
         }
@@ -268,14 +267,14 @@ public class StudentNetworkSimulator extends NetworkSimulator
             Packet ackPacket = new Packet(packet.getSeqnum(), currentAckNumber, 0, packet.getPayload());
             ackPacket.setChecksum(calculateChecksum(ackPacket));
 
-            System.out.println("B Receives " + ackPacket);
+            //System.out.println("B Receives " + ackPacket);
 
             recieveBuffer[packet.getSeqnum()] = ackPacket;
 
             toLayer3(B, recieveBuffer[packet.getSeqnum()]);
         }
         else {
-            System.out.println("BIn corrupted packet detected " + packet);
+            //System.out.println("BIn corrupted packet detected " + packet);
             corruptedPackets +=1;
             retransmissionsByA +=1;
             
